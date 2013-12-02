@@ -4,7 +4,9 @@
         var i = 0,
             robots = [],
             settings = $.extend({
-                robots: 100
+                robots: 100,
+                width: 500,
+                height: 500
             }, options);
 
         for (i = 0; i < settings.robots; i += 1) {
@@ -14,7 +16,7 @@
             }
 
             var robot = new Robot(i);
-            robot.respawn(i, i);
+            robot.respawn((Math.floor(Math.random() * settings.width) + 1), (Math.floor(Math.random() * settings.height) + 1));
             robot.follow(follow);
 
             robots.push(robot);
