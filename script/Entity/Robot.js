@@ -20,18 +20,33 @@ function Robot(id) {
         x: 0,
         y: 0
     };
-}
-
-Robot.prototype.follow = function (follow) {
 
     /**
-     * robot's id to follow
+     * is blocked?
+     * @type {Boolean}
+     */
+    this.blocked = false;
+}
+
+Robot.prototype.captivate = function (followed) {
+
+    /**
+     * robot's id to followed
      * @type integer
      */
-    this.follow = follow;
+    this.followed = followed;
 };
 
 Robot.prototype.respawn = function (x, y) {
-    this.position.x = x;
-    this.position.y = y;
+    this.position = {
+        x: x,
+        y: y
+    }
 };
+
+Robot.prototype.limit = function (x, y) {
+    this.limit = {
+        x: x,
+        y: y
+    }
+}
