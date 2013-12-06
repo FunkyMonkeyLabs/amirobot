@@ -1,5 +1,5 @@
 $(window).on("blockRobot", function(){
-    if(--loopCounter == 0) {
+    if(0 === --loopCounter) {
         clearInterval(loopId);
     }
 })

@@ -3,7 +3,7 @@
  * @param integer y
  */
 Robot.prototype.move = function (x, y) {
-    if (this.blocked == true) {
+    if (true === this.blocked) {
         return;
     }
 
@@ -19,7 +19,7 @@ Robot.prototype.move = function (x, y) {
  * move left 1px
  */
 Robot.prototype.moveLeft = function () {
-    var x = this.position.x-1;
+    var x = this.position.x - 1;
     this.move(x, this.position.y);
 };
 
@@ -27,7 +27,7 @@ Robot.prototype.moveLeft = function () {
  * move right 1px
  */
 Robot.prototype.moveRight = function () {
-    var x = this.position.x+1;
+    var x = this.position.x + 1;
     this.move(x, this.position.y);
 }
 
@@ -35,7 +35,7 @@ Robot.prototype.moveRight = function () {
  * move top 1px
  */
 Robot.prototype.moveTop = function () {
-    var y = this.position.y-1;
+    var y = this.position.y - 1;
     this.move(this.position.x, y);
 };
 
@@ -43,7 +43,7 @@ Robot.prototype.moveTop = function () {
  * move down 1px
  */
 Robot.prototype.moveBottom = function () {
-    var y = this.position.y+1;
+    var y = this.position.y + 1;
     this.move(this.position.x, y);
 };
 
@@ -55,27 +55,31 @@ Robot.prototype.follow = function () {
         followedPosition = followed.position,
         collision = new Collision(this.position, followedPosition);
 
-    if (this.blocked == true) {
+    if (true === this.blocked) {
         return;
     }
 
     if (collision.isClose(2)) {
         this.block();
     }
-    if (this.position.x == this.limit.x) {
-        this.moveLeft();
-    }
 
-    if (this.position.y == this.limit.y) {
-        this.moveTop();
-    }
+    // watch the limit
+    switch (true) {
+        case (this.position.x == this.limit.x):
+            this.moveLeft();
+            break;
 
-    if (this.position.x == 0) {
-        this.moveRight();
-    }
+        case (this.position.y == this.limit.y):
+            this.moveTop();
+            break;
 
-    if (this.position.y == 0) {
-        this.moveBottom();
+        case (this.position.x == 0):
+            this.moveRight();
+            break;
+
+        case (this.position.y == 0):
+            this.moveBottom();
+            break;
     }
 
     if (this.position.y == 0
@@ -85,6 +89,7 @@ Robot.prototype.follow = function () {
         return;
     }
 
+    // follow the rabbit
     if (this.position.x > followedPosition.x) {
         this.moveLeft();
     } else {
