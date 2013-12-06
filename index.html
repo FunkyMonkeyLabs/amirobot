@@ -1,23 +1,49 @@
 <html>
 <head>
   <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="script/Entity/Collision.js"></script>
   <script type="text/javascript" src="script/Entity/Robot.js"></script>
+  <script type="text/javascript" src="script/Actions/Robot.js"></script>
+  <script type="text/javascript" src="script/Graph/Robot.js"></script>
+  <script type="text/javascript" src="script/Event/BlockListener.js"></script>
   <script type="text/javascript" src="script/amIRobot.js"></script>
   <script type="text/javascript">
     $(document).ready(function(){
-      $("div").amIRobot();
+      $("body").amIRobot({
+        robots: 1000
+      });
     });
   </script>
   <style type="text/css">
-    div {
-      width:500px;
-      height:500px;
-      margin:auto;
-      border:1px solid red;
+    body {
+      overflow: hidden;
+      background: black;
+      color:#ffffff;
+      font-family: verdana, arial;
+    }
+
+    a {
+      color:#aaf8ff;
+    }
+
+    .robot {
+      width:2px;
+      height:2px;
+      background: #aaf8ff;
+    }
+
+    footer {
+      position: absolute;
+      bottom:0;
+      right:0;
     }
   </style>
 </head>
 <body>
-<div></div>
+  <footer>
+    by <a href="http://abdulklara.pl">abdulklarapl</a>
+    (see <a href="http://funkymonkeylabs.pl" title="Funky Monkey Labs">Funky Monkey Labs</a>
+    and <a href="http://github.com/abdulklarapl/amirobot" title="abdulklarapl github">github</a>)
+  </footer>
 </body>
 </html>
