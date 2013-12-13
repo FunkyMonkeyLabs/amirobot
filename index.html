@@ -3,6 +3,7 @@
   <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
   <script type="text/javascript" src="script/Entity/Collision.js"></script>
   <script type="text/javascript" src="script/Entity/Robot.js"></script>
+  <script type="text/javascript" src="script/Entity/Plane.js"></script>
   <script type="text/javascript" src="script/Actions/Robot.js"></script>
   <script type="text/javascript" src="script/Graph/Robot.js"></script>
   <script type="text/javascript" src="script/Event/BlockListener.js"></script>
@@ -23,13 +24,7 @@
     }
 
     a {
-      color:#aaf8ff;
-    }
-
-    .robot {
-      width:2px;
-      height:2px;
-      background: #aaf8ff;
+      color: yellow;
     }
 
     footer {
@@ -40,10 +35,12 @@
   </style>
 </head>
 <body>
+  <canvas id="robotsPlane"></canvas>
   <footer>
     by <a href="http://abdulklara.pl">abdulklarapl</a>
     (see <a href="http://funkymonkeylabs.pl" title="Funky Monkey Labs">Funky Monkey Labs</a>
     and <a href="http://github.com/abdulklarapl/amirobot" title="abdulklarapl github">github</a>)
+    AND <a href="http://github.com/giero">giero</a> (canvas version)
   </footer>
 </body>
 </html>

@@ -2,7 +2,6 @@
  * Robot entity
  *
  * @param id
- * @param position
  * @constructor
  */
 function Robot(id) {
@@ -26,6 +25,11 @@ function Robot(id) {
      * @type {Boolean}
      */
     this.blocked = false;
+
+    /**
+     * @type {number}
+     */
+    this.moveStep = 1;
 }
 
 Robot.prototype.captivate = function (followed) {
@@ -49,4 +53,4 @@ Robot.prototype.limit = function (x, y) {
         x: x,
         y: y
     }
-}
+};
