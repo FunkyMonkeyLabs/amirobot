@@ -1,47 +1,71 @@
-var robots = []
-    followers = []
-    loopId = null
-    loopCounter = 0,
-    generateFollower = function(max) {
-        var follow = Math.floor(Math.random() * max);
-        if (followers.indexOf(follow) > -1 || isNaN(follow)) {
-            follow = generateFollower(max);
+var shuffle = function (array) {
+        var counter = array.length, temp, index;
+
+        // While there are elements in the array
+        while (counter--) {
+            // Pick a random index
+            index = (Math.random() * counter) | 0;
+
+            // And swap the last element with it
+            temp = array[counter];
+            array[counter] = array[index];
+            array[index] = temp;
         }
 
-        followers.push(follow);
-        return follow;
+        return array;
+    },
+    generateFollowers = function (max) {
+        var i,
+            followersSequence = [];
+        for (i = 0; i < max; ++i) {
+            followersSequence.push(i);
+        }
+
+        return shuffle(followersSequence);
+    },
+    getRandom = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     };
 
 (function ($) {
-
     $.fn.amIRobot = function (options) {
-        var i = 0,
-            settings = $.extend({
+        window.requestAnimFrame = (function (callback) {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+        })();
+
+        var settings = $.extend({
                 robots: 100,
                 width: window.innerWidth,
                 height: window.innerHeight
-            }, options);
+            }, options),
+            followersSequence = generateFollowers(settings.robots),
+            robots = [],
+            i,
+            plane;
 
-        loopCounter = settings.robots;
+        // generate robots
         for (i = 0; i < settings.robots; i += 1) {
-            var follow = generateFollower(settings.robots);
-
             var robot = new Robot(i);
-            robot.respawn((Math.floor(Math.random() * settings.width) + 1), (Math.floor(Math.random() * settings.height) + 1));
-            robot.captivate(follow);
-            robot.bind($(this));
+            robot.respawn(getRandom(0, settings.width), getRandom(0, settings.height));
+            robot.captivate(followersSequence[i]);
             robot.limit(settings.width, settings.height);
-            robot.draw();
-
             robots.push(robot);
         }
 
-        loopId = setInterval(function(){
-            for(var i = 0; i < robots.length; i++) {
-                var robot = robots[i];
-                robot.follow();
-            }
-        },10);
+        plane = new Plane('robotsPlane', settings.width, settings.height);
+
+        for (i in robots) {
+            robots[i].draw(plane.context);
+        }
+
+        plane.animate(robots);
 
     };
 
