@@ -75,32 +75,22 @@ Robot.prototype.moveBottom = function () {
  */
 Robot.prototype.follow = function (followed) {
     var followedPosition = followed.position,
-        collision = new Collision(this.position, followedPosition),
-        // random behavior generates interesting results
-        modifier = getRandom(0, 1) ? 0 : getRandom(-25, 25);
-
-//    if (collision.isClose(2)) {
-//        this.block();
-//    }
+        collision = new Collision(this.position, followedPosition);
 
     // follow the rabbit
     if (this.position.x > followedPosition.x) {
         this.moveLeft();
     } else if (this.position.x < followedPosition.x){
         this.moveRight();
-    } else {
-        // make some random behaviour
-        this.move(this.position.x + modifier, this.position.y);
     }
 
     if (this.position.y > followedPosition.y) {
         this.moveTop();
     } else if(this.position.y < followedPosition.y){
         this.moveBottom();
-    } else {
-        // make some random behaviour
-        this.move(this.position.x, this.position.y + modifier);
     }
+
+    return collision.isClose(0);
 };
 
 /**
