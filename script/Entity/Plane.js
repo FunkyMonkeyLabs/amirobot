@@ -51,17 +51,22 @@ Plane.prototype.animate = function (robots) {
     robots.forEach(function(robot){
         robot.draw(self.context);
 
-        followed = robots[robot.followed];
-        followedReached = robot.follow(followed);
+        // followed = robots[robot.followed];
+        // followedReached = robot.follow(followed);
 
-        if (followedReached) {
-            robot.respawn(getRandom(0, robot.limit.x), getRandom(0, robot.limit.y));
-            if (robot.moveStep < 10) {
-                ++robot.moveStep;
-            } else {
-                robot.followed = (robot.followed + 1) % robots.length;
-                robot.moveStep = 1;
+        if (getRandom(0, 4)) {
+            robot.moveStep = 5;
+            followed = robots[robot.followed];
+            followedReached = robot.follow(followed);
+        } else {
+            robot.moveStep = 1;
+            // robot.position.x += getRandom(-1, 1);
+            if (robot.position.y >= robot.limit.y || robot.position.y <= 0) {
+                robot.position.y = 0;
+                robot.position.x = getRandom(0, robot.limit.x);
+                // robot.moveStep = -robot.moveStep;
             }
+            robot.moveBottom();
         }
     });
 
