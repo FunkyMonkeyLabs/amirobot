@@ -1,45 +1,33 @@
+<!DOCTYPE HTML>
 <html>
 <head>
-  <script type="text/javascript" src="script/jquery-1.10.2.min.js"></script>
-  <script type="text/javascript" src="script/Entity/Collision.js"></script>
-  <script type="text/javascript" src="script/Entity/Robot.js"></script>
-  <script type="text/javascript" src="script/Entity/Plane.js"></script>
-  <script type="text/javascript" src="script/Actions/Robot.js"></script>
-  <script type="text/javascript" src="script/Graph/Robot.js"></script>
-  <script type="text/javascript" src="script/amIRobot.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $("body").amIRobot({
-        robots: 10000
-      });
-    });
-  </script>
-  <style type="text/css">
-    body {
-      overflow: hidden;
-      background: black;
-      color:#ffffff;
-      font-family: verdana, arial;
-    }
+    <script data-main="scripts/main.js" src="scripts/vendor/require.js"></script>
+    <style type="text/css">
+        body {
+            overflow: hidden;
+            background: black;
+            color: #ffffff;
+            font-family: verdana, arial;
+        }
 
-    a {
-      color: yellow;
-    }
+        a {
+            color: yellow;
+        }
 
-    footer {
-      position: absolute;
-      bottom:0;
-      right:0;
-    }
-  </style>
+        footer {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
 </head>
 <body>
-  <canvas id="robotsPlane"></canvas>
-  <footer>
+<canvas id="robotsPlane"></canvas>
+<footer>
     by <a href="http://abdulklara.pl">abdulklarapl</a>
     (see <a href="http://funkymonkeylabs.pl" title="Funky Monkey Labs">Funky Monkey Labs</a>
     and <a href="http://github.com/abdulklarapl/amirobot" title="abdulklarapl github">github</a>)
     AND <a href="http://github.com/giero">giero</a> (canvas version)
-  </footer>
+</footer>
 </body>
 </html>
