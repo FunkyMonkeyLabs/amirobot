@@ -6,6 +6,11 @@ define(function() {
          * @type {HTMLElement}
          */
         this.canvas = $('#' + id);
+        // set canvas resolution
+        // I know ther're .width() and .height() but
+        // they set a unitless value, whereas we're defining it explicitly as pixles with .attr()
+        this.canvas.attr("width", width + "px");
+        this.canvas.attr("height", height + "px");
 
         /**
          * @type {number}
@@ -21,55 +26,35 @@ define(function() {
          * @type {CanvasRenderingContext2D}
          */
         this.context = this.canvas.get(0).getContext('2d');
-
-        // set canvas resolution
-        // I know ther're .width() and .height() but
-        // they set a unitless value, whereas we're defining it explicitly as pixles with .attr()
-        this.canvas.attr("width", width + "px");
-        this.canvas.attr("height", height + "px");
-
         this.context.fillStyle = '#FFFFFF';
     };
 
     /**
-     * Animate robots movement
-     *
+     * Set robots collection
      * @param robots
      */
-    Plane.prototype.animate = function(robots) {
-        var self = this,
-            followed,
-            followedReached = false;
+    Plane.prototype.setRobots = function(robots) {
+        this.robots = robots;
+    };
+
+    /**
+     * Animate robots behave
+     */
+    Plane.prototype.animate = function() {
+        var self = this;
 
         this.clear();
 
-        robots.forEach(function(robot) {
+        this.robots.forEach(function(robot) {
+            robot.behave();
             robot.draw(self.context);
-
-            // followed = robots[robot.followed];
-            // followedReached = robot.follow(followed);
-
-            if (_.random(0, 4)) {
-                robot.moveStep = 5;
-                followed = robots[robot.followed];
-                followedReached = robot.follow(followed);
-            } else {
-                robot.moveStep = 1;
-                // robot.position.x += _.random(-1, 1);
-                if (robot.position.y >= robot.limit.y || robot.position.y <= 0) {
-                    robot.position.y = 0;
-                    robot.position.x = _.random(0, robot.limit.x);
-                    // robot.moveStep = -robot.moveStep;
-                }
-                robot.moveBottom();
-            }
         });
 
-        // request new frame
         window.requestAnimFrame(function() {
-            self.animate(robots);
+            self.animate();
         });
     };
+
 
     /**
      * Clear canvas plane

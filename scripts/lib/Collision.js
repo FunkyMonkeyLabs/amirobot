@@ -1,6 +1,11 @@
 define(function() {
     'use strict';
 
+    /**
+     * @param positionA
+     * @param positionB
+     * @constructor
+     */
     var Collision = function(positionA, positionB) {
         this.positions = [
             positionA,
@@ -8,6 +13,10 @@ define(function() {
         ];
     };
 
+    /**
+     * @param tolerance
+     * @returns {boolean}
+     */
     Collision.prototype.isClose = function(tolerance) {
         var distance = {
             x: Math.abs(this.positions[0].x - this.positions[1].x),

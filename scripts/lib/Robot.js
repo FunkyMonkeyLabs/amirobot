@@ -1,9 +1,14 @@
-define(['Collision'], function (Collision) {
+define(['underscore', 'Collision'], function(_, Collision) {
     'use strict';
 
+    /**
+     * @param id
+     * @constructor
+     */
     var Robot = function(id) {
         /**
-         * @type integer
+         * robot's id
+         * @type {number}
          */
         this.id = id;
 
@@ -11,10 +16,13 @@ define(['Collision'], function (Collision) {
          * x,y position
          * @type {{x: number, y: number}}
          */
-        this.position = {
-            x: 0,
-            y: 0
-        };
+        this.position = { x: 0, y: 0 };
+
+        /**
+         * maximum x,y position
+         * @type {{x: undefined, y: undefined}}
+         */
+        this.limits = { x: undefined, y: undefined };
 
         /**
          * is blocked?
@@ -25,59 +33,83 @@ define(['Collision'], function (Collision) {
         /**
          * @type {number}
          */
-        this.moveStep = 1;
+        this.step = 1;
     };
 
-    Robot.prototype.captivate = function (followed) {
-
+    /**
+     * Set robot to follow
+     * @param {Robot} followed
+     */
+    Robot.prototype.captivate = function(followed) {
         /**
-         * robot's id to followed
-         * @type integer
+         * robot to follow
+         * @type {number}
          */
         this.followed = followed;
     };
 
-    Robot.prototype.respawn = function (x, y) {
+    /**
+     * Set random position withing given limits
+     */
+    Robot.prototype.respawn = function() {
+        if (!this.hasLimits()) {
+            throw new Error("Use setLimits(x,y) before movement operations");
+        }
+
         this.position = {
+            x: _.random(0, this.limits.x),
+            y: _.random(0, this.limits.y)
+        };
+    };
+
+    /**
+     * Set maximum range of robot's movement
+     * @param {number} x
+     * @param {number} y
+     */
+    Robot.prototype.setLimits = function(x, y) {
+        this.limits = {
             x: x,
             y: y
         };
     };
 
-    Robot.prototype.limit = function (x, y) {
-        this.limit = {
-            x: x,
-            y: y
-        };
+    /**
+     * Check if position limits are set
+     * @returns {boolean}
+     */
+    Robot.prototype.hasLimits = function() {
+        return this.limits.x !== undefined && this.limits.y !== undefined;
     };
 
     /**
      * Check width position
-     *
-     * @param x
+     * @param {number} x
      * @returns {boolean}
      */
-    Robot.prototype.isValidX = function (x) {
-        return x >= 0 && x <= this.limit.x;
+    Robot.prototype.isValidX = function(x) {
+        return x >= 0 && x <= this.limits.x;
     };
 
     /**
      * Check height position
-     *
-     * @param y
+     * @param {number} y
      * @returns {boolean}
      */
-    Robot.prototype.isValidY = function (y) {
-        return y >= 0 && y <= this.limit.y;
+    Robot.prototype.isValidY = function(y) {
+        return y >= 0 && y <= this.limits.y;
     };
 
     /**
      * Move robot to position
-     *
      * @param x
      * @param y
      */
-    Robot.prototype.move = function (x, y) {
+    Robot.prototype.move = function(x, y) {
+        if (!this.hasLimits()) {
+            throw new Error("Set limit before movement operations");
+        }
+
         if (true === this.blocked) {
             return;
         }
@@ -92,54 +124,57 @@ define(['Collision'], function (Collision) {
     };
 
     /**
-     * move left by step
+     * Move left by step
      */
-    Robot.prototype.moveLeft = function () {
-        var x = this.position.x - this.moveStep;
+    Robot.prototype.moveLeft = function() {
+        var x = this.position.x - this.step;
         this.move(x, this.position.y);
     };
 
     /**
-     * move right by step
+     * Move right by step
      */
-    Robot.prototype.moveRight = function () {
-        var x = this.position.x + this.moveStep;
+    Robot.prototype.moveRight = function() {
+        var x = this.position.x + this.step;
         this.move(x, this.position.y);
-    }
+    };
 
     /**
-     * move top by step
+     * Move top by step
      */
-    Robot.prototype.moveTop = function () {
-        var y = this.position.y - this.moveStep;
+    Robot.prototype.moveTop = function() {
+        var y = this.position.y - this.step;
         this.move(this.position.x, y);
     };
 
     /**
-     * move down by step
+     * Move down by step
      */
-    Robot.prototype.moveBottom = function () {
-        var y = this.position.y + this.moveStep;
+    Robot.prototype.moveBottom = function() {
+        var y = this.position.y + this.step;
         this.move(this.position.x, y);
     };
 
     /**
-     * follow another robot
+     * Follow after another robot
+     * @param {Robot} followed
+     * @returns {boolean}
      */
-    Robot.prototype.follow = function (followed) {
-        var followedPosition = followed.position,
+    Robot.prototype.follow = function() {
+        var followed = this.followed,
+            followedPosition = followed.position,
             collision = new Collision(this.position, followedPosition);
 
         // follow the rabbit
         if (this.position.x > followedPosition.x) {
             this.moveLeft();
-        } else if (this.position.x < followedPosition.x){
+        } else if (this.position.x < followedPosition.x) {
             this.moveRight();
         }
 
         if (this.position.y > followedPosition.y) {
             this.moveTop();
-        } else if(this.position.y < followedPosition.y){
+        } else if (this.position.y < followedPosition.y) {
             this.moveBottom();
         }
 
@@ -149,12 +184,31 @@ define(['Collision'], function (Collision) {
     /**
      * Block robot's movement
      */
-    Robot.prototype.block = function () {
+    Robot.prototype.block = function() {
         this.blocked = true;
     };
 
-    Robot.prototype.draw = function (context) {
+    /**
+     * Draw robot within given context
+     * @param {CanvasRenderingContext2D} context
+     */
+    Robot.prototype.draw = function(context) {
         context.fillRect(this.position.x, this.position.y, 2, 2);
+    };
+
+    /**
+     * Take actions that should be done by robot within one framerate
+     */
+    Robot.prototype.behave = function() {
+        if (_.random(0, 4)) {
+            this.follow();
+        } else {
+            if (this.position.y >= this.limits.y || this.position.y <= 0) {
+                this.position.y = 0;
+                this.position.x = _.random(0, this.limits.x);
+            }
+            this.moveBottom();
+        }
     };
 
     return Robot;
