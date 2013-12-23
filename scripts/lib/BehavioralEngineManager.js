@@ -24,7 +24,7 @@ define([
     /**
      * Get behaviour engine for robot
      * @param {Robot} robot
-     * @param [BehavioralEngineManager.engineList} Engine
+     * @param {BehavioralEngineManager.enginesList.*} Engine
      * @returns {Engine}
      */
     BehavioralEngineManager.prototype.getEngineForRobot = function(robot, Engine) {

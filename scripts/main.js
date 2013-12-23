@@ -28,7 +28,7 @@ window.requestAnimFrame = (function(callback) {
 })();
 
 requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehavioralEngineManager'],
-    function($, _, Plane, Robot, BehavioralEngineManager) {
+    function($, _, Plane, Robot, BEM) {
         'use strict';
 
         $.fn.amIRobot = function(options) {
@@ -36,7 +36,7 @@ requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehavioralEngineManager'],
                     robots: 100,
                     width: window.innerWidth,
                     height: window.innerHeight,
-                    engine: BehavioralEngineManager.enginesList.TORNADO
+                    engine: BEM.enginesList.TORNADO
                 }, options),
                 robots = [],
                 robot,
