@@ -36,7 +36,7 @@ requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehavioralEngineManager'],
                     robots: 100,
                     width: window.innerWidth,
                     height: window.innerHeight,
-                    engine: BehavioralEngineManager.enginesEnum.TORNADO
+                    engine: BehavioralEngineManager.enginesList.TORNADO
                 }, options),
                 robots = [],
                 robot,

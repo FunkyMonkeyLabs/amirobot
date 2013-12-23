@@ -5,29 +5,30 @@ define([
 ], function(Follower, Tornado, UpAndDown) {
     'use strict';
 
+    /**
+     * @constructor
+     */
     var BehavioralEngineManager = function() {
     };
 
-    BehavioralEngineManager.prototype.enginesEnum = {
-        'FOLLOWER': 'follower',
-        'TORNADO': 'tornado',
-        'UP_AND_DOWN': 'upAndDown'
+    /**
+     * Engines enum
+     * @type {{FOLLOWER: *, TORNADO: *, UP_AND_DOWN: *}}
+     */
+    BehavioralEngineManager.prototype.enginesList = {
+        'FOLLOWER': Follower,
+        'TORNADO': Tornado,
+        'UP_AND_DOWN': UpAndDown
     };
 
-    BehavioralEngineManager.prototype.getEngineForRobot = function(robot, engine) {
-        var engines = {
-            'follower': Follower,
-            'tornado': Tornado,
-            'upAndDown': UpAndDown
-        };
-
-        engine = engine.toLowerCase();
-
-        if (!engines.hasOwnProperty(engine)) {
-            throw new Error('Undefined behaviour engine: ' + engine);
-        }
-
-        return new engines[engine](robot);
+    /**
+     * Get behaviour engine for robot
+     * @param {Robot} robot
+     * @param [BehavioralEngineManager.engineList} Engine
+     * @returns {Engine}
+     */
+    BehavioralEngineManager.prototype.getEngineForRobot = function(robot, Engine) {
+        return new Engine(robot);
     };
 
     return new BehavioralEngineManager();

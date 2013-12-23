@@ -14,6 +14,7 @@ define(function() {
     };
 
     /**
+     * Check if two positions are close within given tolerance
      * @param tolerance
      * @returns {boolean}
      */

@@ -159,7 +159,6 @@ define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Colli
 
     /**
      * Follow after another robot
-     * @param {Robot} followed
      * @returns {boolean}
      */
     Robot.prototype.follow = function() {
