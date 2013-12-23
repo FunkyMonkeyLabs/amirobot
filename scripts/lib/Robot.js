@@ -1,4 +1,4 @@
-define(['underscore', 'Collision'], function(_, Collision) {
+define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Collision, BehavioralEngineManager) {
     'use strict';
 
     /**
@@ -34,6 +34,8 @@ define(['underscore', 'Collision'], function(_, Collision) {
          * @type {number}
          */
         this.step = 1;
+
+        this.behavioralEngine = undefined;
     };
 
     /**
@@ -161,6 +163,10 @@ define(['underscore', 'Collision'], function(_, Collision) {
      * @returns {boolean}
      */
     Robot.prototype.follow = function() {
+        if (this.followed === undefined) {
+            throw new Error("There's no one to follow");
+        }
+
         var followed = this.followed,
             followedPosition = followed.position,
             collision = new Collision(this.position, followedPosition);
@@ -197,17 +203,21 @@ define(['underscore', 'Collision'], function(_, Collision) {
     };
 
     /**
+     * Generate behavioral engine by name
+     * @param engine
+     */
+    Robot.prototype.setBehavioralEngine = function(engine) {
+        this.behavioralEngine = BehavioralEngineManager.getEngineForRobot(this, engine);
+    };
+
+    /**
      * Take actions that should be done by robot within one framerate
      */
     Robot.prototype.behave = function() {
-        if (_.random(0, 4)) {
-            this.follow();
+        if (this.behavioralEngine !== undefined) {
+            this.behavioralEngine.behave();
         } else {
-            if (this.position.y >= this.limits.y || this.position.y <= 0) {
-                this.position.y = 0;
-                this.position.x = _.random(0, this.limits.x);
-            }
-            this.moveBottom();
+            this.follow();
         }
     };
 
