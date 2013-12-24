@@ -20,7 +20,7 @@ define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, Be
 
         /**
          * maximum x,y position
-         * @type {{x: undefined, y: undefined}}
+         * @type {{x: number, y: number}}
          */
         this.limits = { x: undefined, y: undefined };
 
@@ -35,7 +35,17 @@ define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, Be
          */
         this.step = 1;
 
-        this.behavioralEngine = undefined;
+        /**
+         *
+         * @type {undefined}
+         */
+        this.behavior = undefined;
+
+        /**
+         * robot to follow
+         * @type {Robot}|{undefined}
+         */
+        this.followed = undefined;
     };
 
     /**
@@ -43,10 +53,6 @@ define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, Be
      * @param {Robot} followed
      */
     Robot.prototype.captivate = function(followed) {
-        /**
-         * robot to follow
-         * @type {number}
-         */
         this.followed = followed;
     };
 
@@ -105,8 +111,8 @@ define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, Be
 
     /**
      * Move robot to position
-     * @param x
-     * @param y
+     * @param {number} x
+     * @param {number} y
      * @returns {boolean}
      * @private
      */
@@ -162,40 +168,12 @@ define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, Be
 
     /**
      * Move to x, y coordinates
-     * @param x
-     * @param y
+     * @param {number} x
+     * @param {number} y
      * @returns {boolean}
      */
     Robot.prototype.moveTo = function(x, y) {
         return this._move(x, y);
-    };
-
-    /**
-     * Follow after another robot
-     * @returns {boolean}
-     */
-    Robot.prototype.follow = function() {
-        if (this.followed === undefined) {
-            throw new Error("There's no one to follow");
-        }
-
-        var followedPosition = this.followed.position,
-            collision = new Collision(this.position, followedPosition);
-
-        // follow the rabbit
-        if (this.position.x > followedPosition.x) {
-            this.moveLeft();
-        } else if (this.position.x < followedPosition.x) {
-            this.moveRight();
-        }
-
-        if (this.position.y > followedPosition.y) {
-            this.moveTop();
-        } else if (this.position.y < followedPosition.y) {
-            this.moveBottom();
-        }
-
-        return collision.isClose(0);
     };
 
     /**
@@ -206,7 +184,7 @@ define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, Be
     };
 
     /**
-     * Draw robot within given context
+     * Draw robot within given canvas context
      * @param {CanvasRenderingContext2D} context
      */
     Robot.prototype.draw = function(context) {
@@ -217,18 +195,28 @@ define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, Be
      * Set robot's behavior
      * @param {BehaviorManager.behaviors} behavior
      */
-    Robot.prototype.setBehavioralEngine = function(behavior) {
-        this.behavioralEngine = BehaviorManager.getBehaviorForRobot(this, behavior);
+    Robot.prototype.setBehavior = function(behavior) {
+        this.behavior = BehaviorManager.getBehaviorForRobot(this, behavior);
     };
 
     /**
      * Take actions that should be done by robot within one framerate
      */
     Robot.prototype.behave = function() {
-        if (this.behavioralEngine !== undefined) {
-            this.behavioralEngine.behave();
+        if (this.behavior !== undefined && typeof this.behavior.behave === 'function') {
+            this.behavior.behave();
         } else {
-            this.follow();
+            if (this.position.x > this.limits.x / 2) {
+                this.moveBottom();
+            } else if (this.position.x < this.limits.x / 2) {
+                this.moveTop();
+            }
+
+            if (this.position.y > this.limits.y / 2) {
+                this.moveLeft();
+            } else if (this.position.y < this.limits.y / 2) {
+                this.moveRight();
+            }
         }
     };
 

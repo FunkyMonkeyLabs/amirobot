@@ -1,4 +1,4 @@
-define(['underscore'], function(_) {
+define(['underscore', '../behavior/Follower'], function(_, Follower) {
     'use strict';
 
     /**
@@ -7,11 +7,12 @@ define(['underscore'], function(_) {
      */
     var Tornado = function(robot) {
         this.robot = robot;
+        this.followerBehavior = new Follower(robot);
     };
 
     Tornado.prototype.behave = function() {
         if (_.random(0, 4)) {
-            this.robot.follow();
+            this.followerBehavior.behave();
             this.robot.step = 6;
         } else {
             this.robot.step = 1;
