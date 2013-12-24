@@ -1,4 +1,4 @@
-define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Collision, BehavioralEngineManager) {
+define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, BehaviorManager) {
     'use strict';
 
     /**
@@ -52,16 +52,14 @@ define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Colli
 
     /**
      * Set random position withing given limits
+     * @returns {boolean}
      */
     Robot.prototype.respawn = function() {
-        if (!this.hasLimits()) {
+        if (!this._hasLimits()) {
             throw new Error("Use setLimits(x,y) before movement operations");
         }
 
-        this.position = {
-            x: _.random(0, this.limits.x),
-            y: _.random(0, this.limits.y)
-        };
+        return this.moveTo(_.random(0, this.limits.x), _.random(0, this.limits.y));
     };
 
     /**
@@ -79,8 +77,9 @@ define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Colli
     /**
      * Check if position limits are set
      * @returns {boolean}
+     * @private
      */
-    Robot.prototype.hasLimits = function() {
+    Robot.prototype._hasLimits = function() {
         return this.limits.x !== undefined && this.limits.y !== undefined;
     };
 
@@ -88,8 +87,9 @@ define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Colli
      * Check width position
      * @param {number} x
      * @returns {boolean}
+     * @private
      */
-    Robot.prototype.isValidX = function(x) {
+    Robot.prototype._isValidX = function(x) {
         return x >= 0 && x <= this.limits.x;
     };
 
@@ -97,8 +97,9 @@ define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Colli
      * Check height position
      * @param {number} y
      * @returns {boolean}
+     * @private
      */
-    Robot.prototype.isValidY = function(y) {
+    Robot.prototype._isValidY = function(y) {
         return y >= 0 && y <= this.limits.y;
     };
 
@@ -106,55 +107,67 @@ define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Colli
      * Move robot to position
      * @param x
      * @param y
+     * @returns {boolean}
+     * @private
      */
-    Robot.prototype.move = function(x, y) {
-        if (!this.hasLimits()) {
+    Robot.prototype._move = function(x, y) {
+        if (!this._hasLimits()) {
             throw new Error("Set limit before movement operations");
         }
 
         if (true === this.blocked) {
-            return;
+            return false;
         }
 
-        if (this.isValidX(x)) {
+        if (this._isValidX(x) && this._isValidY(y)) {
             this.position.x = x;
+            this.position.y = y;
+            return true;
         }
 
-        if (this.isValidY(y)) {
-            this.position.y = y;
-        }
+        return false;
     };
 
     /**
      * Move left by step
+     * @returns {boolean}
      */
     Robot.prototype.moveLeft = function() {
-        var x = this.position.x - this.step;
-        this.move(x, this.position.y);
+        return this._move(this.position.x - this.step, this.position.y);
     };
 
     /**
      * Move right by step
+     * @returns {boolean}
      */
     Robot.prototype.moveRight = function() {
-        var x = this.position.x + this.step;
-        this.move(x, this.position.y);
+        return this._move(this.position.x + this.step, this.position.y);
     };
 
     /**
      * Move top by step
+     * @returns {boolean}
      */
     Robot.prototype.moveTop = function() {
-        var y = this.position.y - this.step;
-        this.move(this.position.x, y);
+        return this._move(this.position.x, this.position.y - this.step);
     };
 
     /**
      * Move down by step
+     * @returns {boolean}
      */
     Robot.prototype.moveBottom = function() {
-        var y = this.position.y + this.step;
-        this.move(this.position.x, y);
+        return this._move(this.position.x, this.position.y + this.step);
+    };
+
+    /**
+     * Move to x, y coordinates
+     * @param x
+     * @param y
+     * @returns {boolean}
+     */
+    Robot.prototype.moveTo = function(x, y) {
+        return this._move(x, y);
     };
 
     /**
@@ -166,8 +179,7 @@ define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Colli
             throw new Error("There's no one to follow");
         }
 
-        var followed = this.followed,
-            followedPosition = followed.position,
+        var followedPosition = this.followed.position,
             collision = new Collision(this.position, followedPosition);
 
         // follow the rabbit
@@ -202,11 +214,11 @@ define(['underscore', 'Collision', 'BehavioralEngineManager'], function(_, Colli
     };
 
     /**
-     * Generate behavioral engine by name
-     * @param engine
+     * Set robot's behavior
+     * @param {BehaviorManager.behaviors} behavior
      */
-    Robot.prototype.setBehavioralEngine = function(engine) {
-        this.behavioralEngine = BehavioralEngineManager.getEngineForRobot(this, engine);
+    Robot.prototype.setBehavioralEngine = function(behavior) {
+        this.behavioralEngine = BehaviorManager.getBehaviorForRobot(this, behavior);
     };
 
     /**

@@ -27,8 +27,8 @@ window.requestAnimFrame = (function(callback) {
         };
 })();
 
-requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehavioralEngineManager'],
-    function($, _, Plane, Robot, BEM) {
+requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehaviorManager'],
+    function($, _, Plane, Robot, BM) {
         'use strict';
 
         $.fn.amIRobot = function(options) {
@@ -36,7 +36,7 @@ requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehavioralEngineManager'],
                     robots: 100,
                     width: window.innerWidth,
                     height: window.innerHeight,
-                    engine: BEM.enginesList.TORNADO
+                    engine: BM.behaviors.TORNADO
                 }, options),
                 robots = [],
                 robot,
@@ -62,7 +62,7 @@ requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehavioralEngineManager'],
 
 
         $("body").amIRobot({
-            robots: 1000
+            robots: 5000
         });
     }
 );
