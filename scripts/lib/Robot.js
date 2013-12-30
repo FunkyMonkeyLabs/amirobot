@@ -203,21 +203,11 @@ define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, Be
      * Take actions that should be done by robot within one framerate
      */
     Robot.prototype.behave = function() {
-        if (this.behavior !== undefined && typeof this.behavior.behave === 'function') {
-            this.behavior.behave();
-        } else {
-            if (this.position.x > this.limits.x / 2) {
-                this.moveBottom();
-            } else if (this.position.x < this.limits.x / 2) {
-                this.moveTop();
-            }
+      if (this.behavior === undefined || typeof this.behavior.behave !== 'function') {
+        throw 'You cannot fire the robot without behavior';
+      }
 
-            if (this.position.y > this.limits.y / 2) {
-                this.moveLeft();
-            } else if (this.position.y < this.limits.y / 2) {
-                this.moveRight();
-            }
-        }
+      this.behavior.behave();
     };
 
     return Robot;

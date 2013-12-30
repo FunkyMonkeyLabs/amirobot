@@ -13,12 +13,12 @@ define([
 
     /**
      * Engines enum
-     * @type {{FOLLOWER: *, TORNADO: *, UP_AND_DOWN: *}}
+     * @type {{follower: *, tornado: *, upAndDown: *}}
      */
     BehaviorManager.prototype.behaviors = {
-        'FOLLOWER': Follower,
-        'TORNADO': Tornado,
-        'UP_AND_DOWN': UpAndDown
+        'follower': Follower,
+        'tornado': Tornado,
+        'upAndDown': UpAndDown
     };
 
     /**

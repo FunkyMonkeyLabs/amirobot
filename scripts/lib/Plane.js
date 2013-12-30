@@ -1,11 +1,11 @@
 define(function() {
     'use strict';
 
-    var Plane = function(id, width, height) {
+    var Plane = function(canvas, width, height) {
         /**
          * @type {HTMLElement}
          */
-        this.canvas = $('#' + id);
+        this.canvas = canvas;
         // set canvas resolution
         // I know ther're .width() and .height() but
         // they set a unitless value, whereas we're defining it explicitly as pixles with .attr()
