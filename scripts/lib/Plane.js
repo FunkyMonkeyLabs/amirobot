@@ -26,7 +26,7 @@ define(function() {
          * @type {CanvasRenderingContext2D}
          */
         this.context = this.canvas.get(0).getContext('2d');
-        this.context.fillStyle = '#FFFFFF';
+        this.context.fillStyle = '#73C1FD';
     };
 
     /**
