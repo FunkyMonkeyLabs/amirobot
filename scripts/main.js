@@ -52,6 +52,11 @@ requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehaviorManager', 'url'],
         robot.setLimits(settings.width, settings.height);
         robot.setBehavior(settings.engine);
         robot.respawn();
+
+        if (type === 'gravity') {
+          robot.position.y = 0;
+        }
+
         robots.push(robot);
       }
 

@@ -138,32 +138,36 @@ define(['underscore', 'Collision', 'BehaviorManager'], function (_, Collision, B
    * Move left by step
    * @returns {boolean}
    */
-  Robot.prototype.moveLeft = function () {
-    return this._move(this.position.x - this.step, this.position.y);
+  Robot.prototype.moveLeft = function (step) {
+    step = step || this.step;
+    return this._move(this.position.x - step, this.position.y);
   };
 
   /**
    * Move right by step
    * @returns {boolean}
    */
-  Robot.prototype.moveRight = function () {
-    return this._move(this.position.x + this.step, this.position.y);
+  Robot.prototype.moveRight = function (step) {
+    step = step || this.step;
+    return this._move(this.position.x + step, this.position.y);
   };
 
   /**
    * Move top by step
    * @returns {boolean}
    */
-  Robot.prototype.moveTop = function () {
-    return this._move(this.position.x, this.position.y - this.step);
+  Robot.prototype.moveTop = function (step) {
+    step = step || this.step;
+    return this._move(this.position.x, this.position.y - step);
   };
 
   /**
    * Move down by step
    * @returns {boolean}
    */
-  Robot.prototype.moveBottom = function () {
-    return this._move(this.position.x, this.position.y + this.step);
+  Robot.prototype.moveBottom = function (step) {
+    step = step || this.step;
+    return this._move(this.position.x, this.position.y + step);
   };
 
   /**

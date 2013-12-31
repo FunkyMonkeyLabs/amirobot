@@ -3,8 +3,9 @@ define([
   '../behavior/Tornado',
   '../behavior/UpAndDown',
   '../behavior/Stalker',
-  '../behavior/Earthquake'
-], function (Group, Tornado, UpAndDown, Stalker, Earthquake) {
+  '../behavior/Earthquake',
+  '../behavior/Gravity'
+], function (Group, Tornado, UpAndDown, Stalker, Earthquake, Gravity) {
   'use strict';
 
   /**
@@ -15,14 +16,15 @@ define([
 
   /**
    * Engines enum
-   * @type {{Assassin: *, tornado: *, upAndDown: *, stalker: *}}
+   * @type {{group: *, tornado: *, upAndDown: *, stalker: *, earthquake: *}}
    */
   BehaviorManager.prototype.behaviors = {
     'group': Group,
     'tornado': Tornado,
     'upAndDown': UpAndDown,
     'stalker': Stalker,
-    'earthquake': Earthquake
+    'earthquake': Earthquake,
+    'gravity': Gravity
   };
 
   /**

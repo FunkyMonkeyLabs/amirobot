@@ -1,4 +1,4 @@
-define(['underscore', 'Collision'], function (_, Collision) {
+define(['underscore', 'Collision', '../behavior/Gravity'], function (_, Collision, Gravity) {
   'use strict';
 
   /**
@@ -7,16 +7,11 @@ define(['underscore', 'Collision'], function (_, Collision) {
    */
   var Earthquake = function (robot) {
     this.robot = robot;
-    this.counter = 0;
+    this.gravityBehavior = new Gravity(this.robot);
   };
 
   Earthquake.prototype.behave = function () {
-//    console.log(this.robot.followed);
     var followedPosition = this.robot.followed.position,
-      position = {
-        x: this.robot.position.x,
-        y: this.robot.position.y
-      },
       collision = new Collision(this.robot.position, followedPosition);
 
     if (collision.isClose(this.robot.step + 1) === true) {
@@ -24,7 +19,12 @@ define(['underscore', 'Collision'], function (_, Collision) {
     }
 
     this.quake(followedPosition);
-    this.fall();
+
+    if (undefined === this.gravityBehavior) {
+      this.gravityBehavior = new Gravity(this.robot);
+    }
+
+    this.gravityBehavior.behave();
   };
 
   Earthquake.prototype.fall = function () {
@@ -32,7 +32,7 @@ define(['underscore', 'Collision'], function (_, Collision) {
     this.robot.moveBottom();
   };
 
-  Earthquake.prototype.follow = function(followedPosition, position) {
+  Earthquake.prototype.follow = function (followedPosition, position) {
     this.robot.step = 2;
     if (position.x > followedPosition.x) {
       this.robot.moveLeft();
@@ -42,19 +42,18 @@ define(['underscore', 'Collision'], function (_, Collision) {
   };
 
   Earthquake.prototype.quake = function (followedPosition) {
-    if ((new Date()).getSeconds() % 10 === 0) {
-      this.robot.step = _.random(0, (this.robot.limits.y/30));
+    if ((new Date()).getSeconds() % 5 === 0) {
+      this.robot.step = _.random(0, this.robot.limits.y / 25);
       var position = {
         x: this.robot.position.x,
         y: this.robot.position.y
       };
-      if (this.robot.id == 1 ) {
-        console.log(position.y, this.robot.step, this.robot.limits.y);
-      }
+
       this.robot.moveTop();
       this.follow(followedPosition, position);
 
       this.fall();
+      this.gravityBehavior = undefined;
     }
   };
 
