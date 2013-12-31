@@ -8,7 +8,6 @@ define(['Collision'], function (Collision) {
   var Group = function (robot) {
     this.robot = robot;
     this.robot.step = 2;
-    this.followed = this.robot.followed;
   };
 
   Group.prototype.follow = function () {
@@ -20,7 +19,7 @@ define(['Collision'], function (Collision) {
       collision = new Collision(this.robot.position, followedPosition);
 
     if (collision.isClose(this.robot.step + 1) === true) {
-      this.followed.block();
+      this.robot.followed.block();
     }
 
     // follow the rabbit
