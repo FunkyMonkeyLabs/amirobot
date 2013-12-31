@@ -1,67 +1,67 @@
-define(function() {
-    'use strict';
+define(function () {
+  'use strict';
 
-    var Plane = function(canvas, width, height) {
-        /**
-         * @type {HTMLElement}
-         */
-        this.canvas = canvas;
-        // set canvas resolution
-        // I know ther're .width() and .height() but
-        // they set a unitless value, whereas we're defining it explicitly as pixles with .attr()
-        this.canvas.attr("width", width + "px");
-        this.canvas.attr("height", height + "px");
-
-        /**
-         * @type {number}
-         */
-        this.canvasWidth = width;
-
-        /**
-         * @type {number}
-         */
-        this.canvasHeight = height;
-
-        /**
-         * @type {CanvasRenderingContext2D}
-         */
-        this.context = this.canvas.get(0).getContext('2d');
-        this.context.fillStyle = '#73C1FD';
-    };
+  var Plane = function (canvas, width, height) {
+    /**
+     * @type {HTMLElement}
+     */
+    this.canvas = canvas;
+    // set canvas resolution
+    // I know ther're .width() and .height() but
+    // they set a unitless value, whereas we're defining it explicitly as pixles with .attr()
+    this.canvas.attr("width", width + "px");
+    this.canvas.attr("height", height + "px");
 
     /**
-     * Set robots collection
-     * @param robots
+     * @type {number}
      */
-    Plane.prototype.setRobots = function(robots) {
-        this.robots = robots;
-    };
+    this.canvasWidth = width;
 
     /**
-     * Animate robots behave
+     * @type {number}
      */
-    Plane.prototype.animate = function() {
-        var self = this;
-
-        this.clear();
-
-        this.robots.forEach(function(robot) {
-            robot.behave();
-            robot.draw(self.context);
-        });
-
-        window.requestAnimFrame(function() {
-            self.animate();
-        });
-    };
-
+    this.canvasHeight = height;
 
     /**
-     * Clear canvas plane
+     * @type {CanvasRenderingContext2D}
      */
-    Plane.prototype.clear = function() {
-        this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    };
+    this.context = this.canvas.get(0).getContext('2d');
+    this.context.fillStyle = '#73C1FD';
+  };
 
-    return Plane;
+  /**
+   * Set robots collection
+   * @param robots
+   */
+  Plane.prototype.setRobots = function (robots) {
+    this.robots = robots;
+  };
+
+  /**
+   * Animate robots behave
+   */
+  Plane.prototype.animate = function () {
+    var self = this;
+
+    this.clear();
+
+    this.robots.forEach(function (robot) {
+      robot.behave();
+      robot.draw(self.context);
+    });
+
+    window.requestAnimFrame(function () {
+      self.animate();
+    });
+  };
+
+
+  /**
+   * Clear canvas plane
+   */
+  Plane.prototype.clear = function () {
+    this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+  };
+
+  return Plane;
 });

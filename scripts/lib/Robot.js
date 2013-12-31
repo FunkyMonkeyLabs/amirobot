@@ -1,214 +1,214 @@
-define(['underscore', 'Collision', 'BehaviorManager'], function(_, Collision, BehaviorManager) {
-    'use strict';
+define(['underscore', 'Collision', 'BehaviorManager'], function (_, Collision, BehaviorManager) {
+  'use strict';
+
+  /**
+   * @param id
+   * @constructor
+   */
+  var Robot = function (id) {
+    /**
+     * robot's id
+     * @type {number}
+     */
+    this.id = id;
 
     /**
-     * @param id
-     * @constructor
+     * x,y position
+     * @type {{x: number, y: number}}
      */
-    var Robot = function(id) {
-        /**
-         * robot's id
-         * @type {number}
-         */
-        this.id = id;
-
-        /**
-         * x,y position
-         * @type {{x: number, y: number}}
-         */
-        this.position = { x: 0, y: 0 };
-
-        /**
-         * maximum x,y position
-         * @type {{x: number, y: number}}
-         */
-        this.limits = { x: undefined, y: undefined };
-
-        /**
-         * is blocked?
-         * @type {Boolean}
-         */
-        this.blocked = false;
-
-        /**
-         * @type {number}
-         */
-        this.step = 1;
-
-        /**
-         *
-         * @type {undefined}
-         */
-        this.behavior = undefined;
-
-        /**
-         * robot to follow
-         * @type {Robot}|{undefined}
-         */
-        this.followed = undefined;
-    };
+    this.position = { x: 0, y: 0 };
 
     /**
-     * Set robot to follow
-     * @param {Robot} followed
+     * maximum x,y position
+     * @type {{x: number, y: number}}
      */
-    Robot.prototype.captivate = function(followed) {
-        this.followed = followed;
-    };
+    this.limits = { x: undefined, y: undefined };
 
     /**
-     * Set random position withing given limits
-     * @returns {boolean}
+     * is blocked?
+     * @type {Boolean}
      */
-    Robot.prototype.respawn = function() {
-        if (!this._hasLimits()) {
-            throw new Error("Use setLimits(x,y) before movement operations");
-        }
-
-        return this.moveTo(_.random(0, this.limits.x), _.random(0, this.limits.y));
-    };
+    this.blocked = false;
 
     /**
-     * Set maximum range of robot's movement
-     * @param {number} x
-     * @param {number} y
+     * @type {number}
      */
-    Robot.prototype.setLimits = function(x, y) {
-        this.limits = {
-            x: x,
-            y: y
-        };
-    };
+    this.step = 1;
 
     /**
-     * Check if position limits are set
-     * @returns {boolean}
-     * @private
+     *
+     * @type {undefined}
      */
-    Robot.prototype._hasLimits = function() {
-        return this.limits.x !== undefined && this.limits.y !== undefined;
-    };
+    this.behavior = undefined;
 
     /**
-     * Check width position
-     * @param {number} x
-     * @returns {boolean}
-     * @private
+     * robot to follow
+     * @type {Robot}|{undefined}
      */
-    Robot.prototype._isValidX = function(x) {
-        return x >= 0 && x <= this.limits.x;
+    this.followed = undefined;
+  };
+
+  /**
+   * Set robot to follow
+   * @param {Robot} followed
+   */
+  Robot.prototype.captivate = function (followed) {
+    this.followed = followed;
+  };
+
+  /**
+   * Set random position withing given limits
+   * @returns {boolean}
+   */
+  Robot.prototype.respawn = function () {
+    if (!this._hasLimits()) {
+      throw new Error("Use setLimits(x,y) before movement operations");
+    }
+
+    return this.moveTo(_.random(0, this.limits.x), _.random(0, this.limits.y));
+  };
+
+  /**
+   * Set maximum range of robot's movement
+   * @param {number} x
+   * @param {number} y
+   */
+  Robot.prototype.setLimits = function (x, y) {
+    this.limits = {
+      x: x,
+      y: y
     };
+  };
 
-    /**
-     * Check height position
-     * @param {number} y
-     * @returns {boolean}
-     * @private
-     */
-    Robot.prototype._isValidY = function(y) {
-        return y >= 0 && y <= this.limits.y;
-    };
+  /**
+   * Check if position limits are set
+   * @returns {boolean}
+   * @private
+   */
+  Robot.prototype._hasLimits = function () {
+    return this.limits.x !== undefined && this.limits.y !== undefined;
+  };
 
-    /**
-     * Move robot to position
-     * @param {number} x
-     * @param {number} y
-     * @returns {boolean}
-     * @private
-     */
-    Robot.prototype._move = function(x, y) {
-        if (!this._hasLimits()) {
-            throw new Error("Set limit before movement operations");
-        }
+  /**
+   * Check width position
+   * @param {number} x
+   * @returns {boolean}
+   * @private
+   */
+  Robot.prototype._isValidX = function (x) {
+    return x >= 0 && x <= this.limits.x;
+  };
 
-        if (true === this.blocked) {
-            return false;
-        }
+  /**
+   * Check height position
+   * @param {number} y
+   * @returns {boolean}
+   * @private
+   */
+  Robot.prototype._isValidY = function (y) {
+    return y >= 0 && y <= this.limits.y;
+  };
 
-        if (this._isValidX(x) && this._isValidY(y)) {
-            this.position.x = x;
-            this.position.y = y;
-            return true;
-        }
+  /**
+   * Move robot to position
+   * @param {number} x
+   * @param {number} y
+   * @returns {boolean}
+   * @private
+   */
+  Robot.prototype._move = function (x, y) {
+    if (!this._hasLimits()) {
+      throw new Error("Set limit before movement operations");
+    }
 
-        return false;
-    };
+    if (true === this.blocked) {
+      return false;
+    }
 
-    /**
-     * Move left by step
-     * @returns {boolean}
-     */
-    Robot.prototype.moveLeft = function() {
-        return this._move(this.position.x - this.step, this.position.y);
-    };
+    if (this._isValidX(x) && this._isValidY(y)) {
+      this.position.x = x;
+      this.position.y = y;
+      return true;
+    }
 
-    /**
-     * Move right by step
-     * @returns {boolean}
-     */
-    Robot.prototype.moveRight = function() {
-        return this._move(this.position.x + this.step, this.position.y);
-    };
+    return false;
+  };
 
-    /**
-     * Move top by step
-     * @returns {boolean}
-     */
-    Robot.prototype.moveTop = function() {
-        return this._move(this.position.x, this.position.y - this.step);
-    };
+  /**
+   * Move left by step
+   * @returns {boolean}
+   */
+  Robot.prototype.moveLeft = function () {
+    return this._move(this.position.x - this.step, this.position.y);
+  };
 
-    /**
-     * Move down by step
-     * @returns {boolean}
-     */
-    Robot.prototype.moveBottom = function() {
-        return this._move(this.position.x, this.position.y + this.step);
-    };
+  /**
+   * Move right by step
+   * @returns {boolean}
+   */
+  Robot.prototype.moveRight = function () {
+    return this._move(this.position.x + this.step, this.position.y);
+  };
 
-    /**
-     * Move to x, y coordinates
-     * @param {number} x
-     * @param {number} y
-     * @returns {boolean}
-     */
-    Robot.prototype.moveTo = function(x, y) {
-        return this._move(x, y);
-    };
+  /**
+   * Move top by step
+   * @returns {boolean}
+   */
+  Robot.prototype.moveTop = function () {
+    return this._move(this.position.x, this.position.y - this.step);
+  };
 
-    /**
-     * Block robot's movement
-     */
-    Robot.prototype.block = function() {
-        this.blocked = true;
-    };
+  /**
+   * Move down by step
+   * @returns {boolean}
+   */
+  Robot.prototype.moveBottom = function () {
+    return this._move(this.position.x, this.position.y + this.step);
+  };
 
-    /**
-     * Draw robot within given canvas context
-     * @param {CanvasRenderingContext2D} context
-     */
-    Robot.prototype.draw = function(context) {
-        context.fillRect(this.position.x, this.position.y, 2, 2);
-    };
+  /**
+   * Move to x, y coordinates
+   * @param {number} x
+   * @param {number} y
+   * @returns {boolean}
+   */
+  Robot.prototype.moveTo = function (x, y) {
+    return this._move(x, y);
+  };
 
-    /**
-     * Set robot's behavior
-     * @param {BehaviorManager.behaviors} behavior
-     */
-    Robot.prototype.setBehavior = function(behavior) {
-        this.behavior = BehaviorManager.getBehaviorForRobot(this, behavior);
-    };
+  /**
+   * Block robot's movement
+   */
+  Robot.prototype.block = function () {
+    this.blocked = true;
+  };
 
-    /**
-     * Take actions that should be done by robot within one framerate
-     */
-    Robot.prototype.behave = function() {
-      if (this.behavior === undefined || typeof this.behavior.behave !== 'function') {
-        throw 'You cannot fire the robot without behavior';
-      }
+  /**
+   * Draw robot within given canvas context
+   * @param {CanvasRenderingContext2D} context
+   */
+  Robot.prototype.draw = function (context) {
+    context.fillRect(this.position.x, this.position.y, 2, 2);
+  };
 
-      this.behavior.behave();
-    };
+  /**
+   * Set robot's behavior
+   * @param {BehaviorManager.behaviors} behavior
+   */
+  Robot.prototype.setBehavior = function (behavior) {
+    this.behavior = BehaviorManager.getBehaviorForRobot(this, behavior);
+  };
 
-    return Robot;
+  /**
+   * Take actions that should be done by robot within one framerate
+   */
+  Robot.prototype.behave = function () {
+    if (this.behavior === undefined || typeof this.behavior.behave !== 'function') {
+      throw 'You cannot fire the robot without behavior';
+    }
+
+    this.behavior.behave();
+  };
+
+  return Robot;
 });
