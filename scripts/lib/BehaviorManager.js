@@ -1,10 +1,10 @@
 define([
-  '../behavior/Assassin',
+  '../behavior/Group',
   '../behavior/Tornado',
   '../behavior/UpAndDown',
   '../behavior/Stalker',
   '../behavior/Earthquake'
-], function (Assassin, Tornado, UpAndDown, Stalker, Earthquake) {
+], function (Group, Tornado, UpAndDown, Stalker, Earthquake) {
   'use strict';
 
   /**
@@ -18,7 +18,7 @@ define([
    * @type {{Assassin: *, tornado: *, upAndDown: *, stalker: *}}
    */
   BehaviorManager.prototype.behaviors = {
-    'assassin': Assassin,
+    'group': Group,
     'tornado': Tornado,
     'upAndDown': UpAndDown,
     'stalker': Stalker,

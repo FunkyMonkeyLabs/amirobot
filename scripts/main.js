@@ -30,7 +30,7 @@ requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehaviorManager', 'url'],
   function ($, _, Plane, Robot, BM, url) {
     'use strict';
 
-    var type = 'assassin';
+    var type = 'group';
     if (url.parse(document.location.href).get !== undefined
       && url.parse(document.location.href).get.type !== undefined) {
       type = url.parse(document.location.href).get.type;

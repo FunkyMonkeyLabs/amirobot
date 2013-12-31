@@ -5,23 +5,22 @@ define(['Collision'], function (Collision) {
    * @param {Robot} robot
    * @constructor
    */
-  var Assassin = function (robot) {
+  var Group = function (robot) {
     this.robot = robot;
     this.robot.step = 2;
+    this.followed = this.robot.followed;
   };
 
-  Assassin.prototype.follow = function () {
+  Group.prototype.follow = function () {
     if (this.robot.followed === undefined) {
       throw new Error("There's no one to follow");
     }
 
-    var
-      followed = this.robot.followed,
-      followedPosition = this.robot.followed.position,
+    var followedPosition = this.robot.followed.position,
       collision = new Collision(this.robot.position, followedPosition);
 
     if (collision.isClose(this.robot.step + 1) === true) {
-      followed.block();
+      this.followed.block();
     }
 
     // follow the rabbit
@@ -38,12 +37,12 @@ define(['Collision'], function (Collision) {
     }
   };
 
-  Assassin.prototype.behave = function () {
+  Group.prototype.behave = function () {
     if (this.follow() === true) {
       return;
     }
     return this.follow();
   };
 
-  return Assassin;
+  return Group;
 });
