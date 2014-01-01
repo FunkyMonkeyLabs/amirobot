@@ -13,10 +13,11 @@ define(['underscore', 'Collision', 'BehaviorManager'], function (_, Collision, B
     this.id = id;
 
     /**
-     * x,y position
+     * x,y position - use moveTo(x,y) to set this values (has position validation)
      * @type {{x: number, y: number}}
+     * @private
      */
-    this.position = { x: 0, y: 0 };
+    this._position = { x: 0, y: 0 };
 
     /**
      * maximum x,y position
@@ -37,7 +38,7 @@ define(['underscore', 'Collision', 'BehaviorManager'], function (_, Collision, B
 
     /**
      *
-     * @type {undefined}
+     * @type {BehaviorManager.behaviors}|{undefined}
      */
     this.behavior = undefined;
 
@@ -46,6 +47,14 @@ define(['underscore', 'Collision', 'BehaviorManager'], function (_, Collision, B
      * @type {Robot}|{undefined}
      */
     this.followed = undefined;
+  };
+
+  /**
+   * Get current position
+   * @returns {{x: number, y: number}}
+   */
+  Robot.prototype.getPosition = function () {
+    return this._position;
   };
 
   /**
@@ -126,8 +135,8 @@ define(['underscore', 'Collision', 'BehaviorManager'], function (_, Collision, B
     }
 
     if (this._isValidX(x) && this._isValidY(y)) {
-      this.position.x = x;
-      this.position.y = y;
+      this._position.x = x;
+      this._position.y = y;
       return true;
     }
 
@@ -135,39 +144,39 @@ define(['underscore', 'Collision', 'BehaviorManager'], function (_, Collision, B
   };
 
   /**
-   * Move left by step
+   * Move left by step (step can be set or used default instead)
    * @returns {boolean}
    */
   Robot.prototype.moveLeft = function (step) {
     step = step || this.step;
-    return this._move(this.position.x - step, this.position.y);
+    return this._move(this._position.x - step, this._position.y);
   };
 
   /**
-   * Move right by step
+   * Move right by step (step can be set or used default instead)
    * @returns {boolean}
    */
   Robot.prototype.moveRight = function (step) {
     step = step || this.step;
-    return this._move(this.position.x + step, this.position.y);
+    return this._move(this._position.x + step, this._position.y);
   };
 
   /**
-   * Move top by step
+   * Move top by step (step can be set or used default instead)
    * @returns {boolean}
    */
   Robot.prototype.moveTop = function (step) {
     step = step || this.step;
-    return this._move(this.position.x, this.position.y - step);
+    return this._move(this._position.x, this._position.y - step);
   };
 
   /**
-   * Move down by step
+   * Move down by step (step can be set or used default instead)
    * @returns {boolean}
    */
   Robot.prototype.moveBottom = function (step) {
     step = step || this.step;
-    return this._move(this.position.x, this.position.y + step);
+    return this._move(this._position.x, this._position.y + step);
   };
 
   /**
@@ -192,7 +201,7 @@ define(['underscore', 'Collision', 'BehaviorManager'], function (_, Collision, B
    * @param {CanvasRenderingContext2D} context
    */
   Robot.prototype.draw = function (context) {
-    context.fillRect(this.position.x, this.position.y, 2, 2);
+    context.fillRect(this._position.x, this._position.y, 2, 2);
   };
 
   /**

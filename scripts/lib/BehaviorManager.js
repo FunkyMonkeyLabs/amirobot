@@ -16,7 +16,7 @@ define([
 
   /**
    * Engines enum
-   * @type {{group: *, tornado: *, upAndDown: *, stalker: *, earthquake: *}}
+   * @type {{group: *, tornado: *, upAndDown: *, stalker: *, earthquake: *, gravity: *}}
    */
   BehaviorManager.prototype.behaviors = {
     'group': Group,

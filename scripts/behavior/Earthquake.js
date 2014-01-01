@@ -11,8 +11,9 @@ define(['underscore', 'Collision', '../behavior/Gravity'], function (_, Collisio
   };
 
   Earthquake.prototype.behave = function () {
-    var followedPosition = this.robot.followed.position,
-      collision = new Collision(this.robot.position, followedPosition);
+    var followedPosition = this.robot.followed.getPosition(),
+      robotPosition = this.robot.getPosition(),
+      collision = new Collision(robotPosition, followedPosition);
 
     if (collision.isClose(this.robot.step + 1) === true) {
       this.robot.followed.block();
@@ -44,13 +45,10 @@ define(['underscore', 'Collision', '../behavior/Gravity'], function (_, Collisio
   Earthquake.prototype.quake = function (followedPosition) {
     if ((new Date()).getSeconds() % 5 === 0) {
       this.robot.step = _.random(0, this.robot.limits.y / 25);
-      var position = {
-        x: this.robot.position.x,
-        y: this.robot.position.y
-      };
+      var robotPosition = this.robot.getPosition();
 
       this.robot.moveTop();
-      this.follow(followedPosition, position);
+      this.follow(followedPosition, robotPosition);
 
       this.fall();
       this.gravityBehavior = undefined;

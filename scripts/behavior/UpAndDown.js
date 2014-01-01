@@ -10,7 +10,8 @@ define([], function () {
   };
 
   UpAndDown.prototype.behave = function () {
-    if (this.robot.position.y <= 0 || this.robot.position.y >= this.robot.limits.y) {
+    var robotPosition = this.robot.getPosition();
+    if (robotPosition.y <= 0 || robotPosition.y >= this.robot.limits.y) {
       this.robot.step = -this.robot.step;
     }
     this.robot.moveBottom();

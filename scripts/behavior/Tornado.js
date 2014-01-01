@@ -16,9 +16,9 @@ define(['underscore', '../behavior/Stalker'], function (_, Stalker) {
       this.robot.step = 6;
     } else {
       this.robot.step = 1;
-      if (this.robot.position.y >= this.robot.limits.y || this.robot.position.y <= 0) {
-        this.robot.position.y = 0;
-        this.robot.position.x = _.random(0, this.robot.limits.x);
+      var robotPosition = this.robot.getPosition();
+      if (robotPosition.y >= this.robot.limits.y || robotPosition.y <= 0) {
+        this.robot.moveTo(_.random(0, this.robot.limits.x), 0);
       }
       this.robot.moveBottom();
     }

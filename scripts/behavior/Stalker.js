@@ -15,19 +15,20 @@ define(['Collision'], function (Collision) {
       throw new Error("There's no one to follow");
     }
 
-    var followedPosition = this.robot.followed.position,
-      collision = new Collision(this.robot.position, followedPosition);
+    var followedPosition = this.robot.followed.getPosition(),
+      robotPosition = this.robot.getPosition(),
+      collision = new Collision(this.robot.getPosition(), followedPosition);
 
     // follow the rabbit
-    if (this.robot.position.x > followedPosition.x) {
+    if (robotPosition.x > followedPosition.x) {
       this.robot.moveLeft();
-    } else if (this.robot.position.x < followedPosition.x) {
+    } else if (robotPosition.x < followedPosition.x) {
       this.robot.moveRight();
     }
 
-    if (this.robot.position.y > followedPosition.y) {
+    if (robotPosition.y > followedPosition.y) {
       this.robot.moveTop();
-    } else if (this.robot.position.y < followedPosition.y) {
+    } else if (robotPosition.y < followedPosition.y) {
       this.robot.moveBottom();
     }
 
