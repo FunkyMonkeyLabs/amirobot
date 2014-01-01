@@ -17,5 +17,9 @@ define(['underscore'], function (_) {
     this.robot.moveBottom(0.5 * gravity * Math.pow(time / 1000, 2))
   };
 
+  Gravity.prototype.resetTime = function () {
+    this.startTime = (new Date()).getTime();
+  };
+
   return Gravity;
 });

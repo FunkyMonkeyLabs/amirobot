@@ -20,11 +20,6 @@ define(['underscore', 'Collision', '../behavior/Gravity'], function (_, Collisio
     }
 
     this.quake(followedPosition);
-
-    if (undefined === this.gravityBehavior) {
-      this.gravityBehavior = new Gravity(this.robot);
-    }
-
     this.gravityBehavior.behave();
   };
 
@@ -34,11 +29,10 @@ define(['underscore', 'Collision', '../behavior/Gravity'], function (_, Collisio
   };
 
   Earthquake.prototype.follow = function (followedPosition, position) {
-    this.robot.step = 2;
     if (position.x > followedPosition.x) {
-      this.robot.moveLeft();
+      this.robot.moveLeft(2);
     } else if (position.x < followedPosition.x) {
-      this.robot.moveRight();
+      this.robot.moveRight(2);
     }
   };
 
@@ -51,7 +45,7 @@ define(['underscore', 'Collision', '../behavior/Gravity'], function (_, Collisio
       this.follow(followedPosition, robotPosition);
 
       this.fall();
-      this.gravityBehavior = undefined;
+      this.gravityBehavior.resetTime();
     }
   };
 
