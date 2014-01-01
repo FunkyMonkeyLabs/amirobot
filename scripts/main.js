@@ -3,7 +3,11 @@ requirejs.config({
   paths: {
     'underscore': '../vendor/underscore',
     'jquery': '../vendor/jquery-1.10.2.min',
-    'url': '../vendor/url'
+    'url': '../vendor/url',
+    'google-analytics': [
+      '../vendor/google-analytics',
+      '//www.google-analytics.com/analytics'
+    ]
   },
   shim: {
     'underscore': {
@@ -11,6 +15,15 @@ requirejs.config({
     },
     'jquery': {
       exports: '$'
+    },
+    'google-analytics': {
+      exports: 'ga'
+    }
+  },
+  config: {
+    'GoogleAnalytics': {
+      'id': 'UA-41112587-2',
+      'domain': 'funkymonkeylabs.pl'
     }
   }
 });
@@ -26,8 +39,8 @@ window.requestAnimFrame = (function (callback) {
     };
 })();
 
-requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehaviorManager', 'url'],
-  function ($, _, Plane, Robot, BM, url) {
+requirejs(['jquery', 'underscore', 'url', 'Plane', 'Robot', 'BehaviorManager', 'GoogleAnalytics'],
+  function ($, _, url, Plane, Robot, BehaviorManager) {
     'use strict';
 
     var type = 'group';
@@ -40,7 +53,7 @@ requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehaviorManager', 'url'],
           robots: 100,
           width: window.innerWidth,
           height: window.innerHeight,
-          engine: BM.behaviors[type]
+          engine: BehaviorManager.behaviors[type]
         }, options),
         robots = [],
         robot,
@@ -70,7 +83,7 @@ requirejs(['jquery', 'underscore', 'Plane', 'Robot', 'BehaviorManager', 'url'],
     };
 
 
-    $("#robotsPlane").amIRobot({
+    $('#robotsPlane').amIRobot({
       robots: 1000
     });
   }
