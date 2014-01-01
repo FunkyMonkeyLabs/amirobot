@@ -1,111 +1,48 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+  <link href="style.css" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
   <script data-main="scripts/main.js" src="scripts/vendor/require.js"></script>
-  <style type="text/css">
-    body {
-      overflow: hidden;
-      background: black;
-      color: #ffffff;
-      font-family: verdana, arial;
-      margin: 0px;
-      padding: 0px;
-    }
-
-    a {
-      color: #73C1FD;
-    }
-
-    footer {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-    }
-
-    #header {
-      width: 100%;
-      height: auto;
-      margin: 0.8em;
-      position: absolute;
-      left: 15%;
-    }
-
-    #header a {
-      display: block;
-      padding: 10px;
-      color: #ffffff;
-      font-family: 'Lobster';
-      font-weight: 400;
-      font-size: 40px;
-      text-decoration: none;
-      margin: auto;
-    }
-
-    #sidebar {
-      width: 13%;
-      height: 100%;
-      margin: 0;
-      padding: 1%;
-      background: #0E0E0E;
-      position: absolute;
-      float: left;
-    }
-
-    #sidebar li {
-      list-style-type: none;
-      margin: 0;
-      margin-top: 0.5em;
-    }
-
-    #sidebar > li > ul {
-      margin: 0;
-      padding: 0;
-    }
-
-    #sidebar > .header {
-      font-size: 2em;
-    }
-
-    #sidebar > .header > span {
-      color: #73C1FD;
-    }
-
-    canvas#robotsPlane {
-      float: right;
-      width: 85%;
-      height: 100%;
-      position: absolute;
-      left: 15%;
-    }
-  </style>
-
 </head>
 <body>
-<section id="header">
-  <a href="http://funkymonkeylabs.pl">Funky Monkey Labs</a>
-</section>
-<ul id="sidebar">
-  <li class="header">amIRobot<span>?</span></li>
-  <li>select mode:
-    <ul>
-      <li><a href="?type=group">group</a></li>
-      <li><a href="?type=stalker">stalker</a></li>
-      <li><a href="?type=tornado">tornado</a></li>
-      <li><a href="?type=earthquake">earthquake</a></li>
-      <li><a href="?type=upAndDown">up and down</a></li>
-      <li><a href="?type=gravity">gravity</a></li>
-    </ul>
-  </li>
-  <li>by
+
+<aside id="sidebar">
+  <header>
+    amIRobot<span class="color-blue">?</span>
+  </header>
+
+  <div>
+    select mode:
+    <nav>
+      <ul>
+        <li><a href="?type=group">group</a></li>
+        <li><a href="?type=stalker">stalker</a></li>
+        <li><a href="?type=tornado">tornado</a></li>
+        <li><a href="?type=earthquake">earthquake</a></li>
+        <li><a href="?type=upAndDown">up and down</a></li>
+        <li><a href="?type=gravity">gravity</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <footer>
+    by
     <ul>
       <li><a href="http://abdulklara.pl">abdulklarapl</a></li>
-      <li><a href="http://funkymonkeylabs.pl" title="Funky Monkey Labs">Funky Monkey Labs</a></li>
+      <li class="membership">[ <a href="http://funkymonkeylabs.pl" title="Funky Monkey Labs">Funky Monkey Labs</a> ]
+      </li>
       <li><a href="http://github.com/giero">giero</a></li>
     </ul>
-  </li>
-  <li><a href="https://github.com/funkymonkeylabs/amirobot">fork us</a></li>
-</ul>
-<canvas id="robotsPlane"></canvas>
+    <span><a href="https://github.com/funkymonkeylabs/amirobot">fork us</a></span>
+  </footer>
+</aside>
+
+<section id="content">
+  <header>
+    <a href="http://funkymonkeylabs.pl">Funky Monkey Labs</a>
+  </header>
+  <canvas id="robotsPlane"></canvas>
+</section>
 </body>
 </html>

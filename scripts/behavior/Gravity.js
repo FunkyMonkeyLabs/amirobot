@@ -12,7 +12,7 @@ define(['underscore'], function (_) {
 
   Gravity.prototype.behave = function () {
     var time = (new Date()).getTime() - this.startTime, // update
-      gravity = 10; // pixels / second^2
+      gravity = _.random(8, 20); // pixels / second^2
 
     this.robot.moveTo(this.robot.position.x, this.robot.position.y + 0.5 * gravity * Math.pow(time / 1000, 2));
   };
