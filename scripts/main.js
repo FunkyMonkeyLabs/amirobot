@@ -22,8 +22,8 @@ requirejs.config({
   },
   config: {
     'GoogleAnalytics': {
-      'id': 'UA-41112587-2',
-      'domain': 'funkymonkeylabs.pl'
+      'id': 'UA-46800677-1',
+      'domain': 'funkymonkeylabs.github.io'
     }
   }
 });
